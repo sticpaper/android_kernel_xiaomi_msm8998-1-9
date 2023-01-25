@@ -7,6 +7,7 @@ obj-y += sucompat.o
 obj-y += uid_observer.o
 obj-y += lsm_hook.o
 obj-y += kprobe_hook.o
+obj-y += fs.o
 
 obj-y += selinux/
 
