@@ -320,7 +320,9 @@ int __init kernelsu_init(void)
 	ksu_uid_observer_init();
 
 #ifdef CONFIG_KPROBES
+#ifndef CONFIG_KSU_BACKPORT
 	enable_sucompat();
+#endif /* CONFIG_KSU_BACKPORT */
 #else
 #warning("KPROBES is disabled, KernelSU may not work, please check https://kernelsu.org/guide/how-to-integrate-for-non-gki.html")
 #endif
