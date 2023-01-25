@@ -6,6 +6,13 @@ config KSU
 	help
 	This is the KSU privilege driver for android system.
 
+config KSU_BACKPORT
+	tristate "Edit kernelSU define kernel tree"
+	default n
+	depends on KSU
+	help
+	Adapt kernelsu in lower kernel version.
+
 config KSU_DEBUG
 	tristate "KernelSU module debug mode"
 	default n
