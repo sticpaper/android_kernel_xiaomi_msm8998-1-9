@@ -1,0 +1,4 @@
+[submodule "KernelSU"]
+	path = KernelSU
+	url = https://github.com/sticpaper/KernelSU_modules.git
+	branch = main
