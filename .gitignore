@@ -114,6 +114,10 @@ all.config
 # Kdevelop4
 *.kdev4
 
+# kernel extra files
+out
+kbuild.sh
+
 # fetched Android config fragments
 android/configs/android-*.cfg
 
