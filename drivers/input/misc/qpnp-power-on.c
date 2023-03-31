@@ -862,6 +862,11 @@ qpnp_pon_input_dispatch(struct qpnp_pon *pon, u32 pon_type)
 		input_sync(pon->pon_input);
 	}
 
+#ifdef CONFIG_PAPER_ON_POWERKEY_TWI_PANIC
+	if (cfg->pon_type == PON_KPDPWR && key_status)
+		panic("A panic hot restart has been triggered");
+#endif
+
 	input_report_key(pon->pon_input, cfg->key_code, key_status);
 	input_sync(pon->pon_input);
 
