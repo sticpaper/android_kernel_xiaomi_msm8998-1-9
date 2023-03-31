@@ -112,6 +112,12 @@ config QCOM_PRESERVE_MEM
 	  persistent memory contents. Select this option to always perform
 	  a soft reset that preserves memory contents.
 
+config PAPER_ON_POWERKEY_TWI_PANIC
+	bool "Debug export init log to pstore"
+	depends on PAPER_XIAOMI_KERNEL_MERGE
+	help
+	  If you encounter card 1 and need init log, please open it.
+
 config POWER_RESET_QNAP
 	bool "QNAP power-off driver"
 	depends on OF_GPIO && PLAT_ORION
