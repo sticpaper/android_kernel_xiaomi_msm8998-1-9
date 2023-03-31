@@ -13,6 +13,12 @@ config MACH_XIAOMI_MSM8998
 	help
 	 Support for MSM8998 Xiaomi boards.
 
+config PAPER_XIAOMI_KERNEL_MERGE
+	bool "Define paper xiaomi kernel"
+	depends on MACH_XIAOMI_MSM8998
+	help
+	 Define paper xiaomi device kernel.
+
 menu "Xiaomi board selection"
 
 config MACH_SAGIT
