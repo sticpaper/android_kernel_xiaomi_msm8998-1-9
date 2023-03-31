@@ -120,6 +120,11 @@ android/configs/android-*.cfg
 # Clang's compilation database file
 /compile_commands.json
 
+# kernel extra files
+out
+paper
+kbuild.sh
+
 #
 #Ignoring Android.bp link file
 #
