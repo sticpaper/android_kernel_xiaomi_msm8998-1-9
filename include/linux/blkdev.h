@@ -38,7 +38,12 @@ struct blk_flush_queue;
 struct pr_ops;
 
 #define BLKDEV_MIN_RQ	4
+
+#ifdef CONFIG_PAPER_QUEUE_DEPTH_OPT
+#define BLKDEV_MAX_RQ	32	/* Default maximum */
+#else /* c: CONFIG_PAPER_QUEUE_DEPTH_OPT */
 #define BLKDEV_MAX_RQ	128	/* Default maximum */
+#endif /* c: CONFIG_PAPER_QUEUE_DEPTH_OPT */
 
 /*
  * Maximum number of blkcg policies allowed to be registered concurrently.
