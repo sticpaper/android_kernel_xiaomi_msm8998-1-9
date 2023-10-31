@@ -564,6 +564,10 @@ F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, gc_booster, gc_booster);
 F2FS_RW_ATTR(SM_INFO, f2fs_sm_info, reclaim_segments, rec_prefree_segments);
 F2FS_RW_ATTR(SM_INFO, f2fs_sm_info, main_blkaddr, main_blkaddr);
 F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, max_small_discards, max_discards);
+F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, max_discard_request, max_discard_request);
+F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, min_discard_issue_time, min_discard_issue_time);
+F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, mid_discard_issue_time, mid_discard_issue_time);
+F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, max_discard_issue_time, max_discard_issue_time);
 F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, discard_urgent_util, discard_urgent_util);
 F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, discard_granularity, discard_granularity);
 F2FS_RW_ATTR(RESERVED_BLOCKS, f2fs_sb_info, reserved_blocks, reserved_blocks);
@@ -642,6 +646,10 @@ static struct attribute *f2fs_attrs[] = {
 	ATTR_LIST(reclaim_segments),
 	ATTR_LIST(main_blkaddr),
 	ATTR_LIST(max_small_discards),
+	ATTR_LIST(max_discard_request),
+	ATTR_LIST(min_discard_issue_time),
+	ATTR_LIST(mid_discard_issue_time),
+	ATTR_LIST(max_discard_issue_time),
 	ATTR_LIST(discard_urgent_util),
 	ATTR_LIST(discard_granularity),
 	ATTR_LIST(pending_discard),
