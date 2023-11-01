@@ -45,6 +45,8 @@ TRACE_DEFINE_ENUM(CP_SYNC);
 TRACE_DEFINE_ENUM(CP_RECOVERY);
 TRACE_DEFINE_ENUM(CP_DISCARD);
 TRACE_DEFINE_ENUM(CP_TRIMMED);
+TRACE_DEFINE_ENUM(CP_PAUSE);
+TRACE_DEFINE_ENUM(CP_RESIZE);
 
 #define show_block_type(type)						\
 	__print_symbolic(type,						\
@@ -111,13 +113,15 @@ TRACE_DEFINE_ENUM(CP_TRIMMED);
 
 #define show_alloc_mode(type)						\
 	__print_symbolic(type,						\
-		{ LFS,	"LFS-mode" },					\
-		{ SSR,	"SSR-mode" })
+		{ LFS,		"LFS-mode" },				\
+		{ SSR,		"SSR-mode" },				\
+		{ AT_SSR,	"AT_SSR-mode" })
 
 #define show_victim_policy(type)					\
 	__print_symbolic(type,						\
 		{ GC_GREEDY,	"Greedy" },				\
-		{ GC_CB,	"Cost-Benefit" })
+		{ GC_CB,	"Cost-Benefit" },			\
+		{ GC_AT,	"Age-threshold" })
 
 #define show_cpreason(type)						\
 	__print_symbolic(type,						\
@@ -126,7 +130,8 @@ TRACE_DEFINE_ENUM(CP_TRIMMED);
 		{ CP_SYNC,	"Sync" },				\
 		{ CP_RECOVERY,	"Recovery" },				\
 		{ CP_DISCARD,	"Discard" },				\
-		{ CP_UMOUNT | CP_TRIMMED,	"Umount,Trimmed" })
+		{ CP_PAUSE | CP_TRIMMED,	"Pause,Trimmed" },	\
+		{ CP_RESIZE,	"Resize" })
 
 #define show_fsync_cpreason(type)					\
 	__print_symbolic(type,						\
@@ -139,7 +144,8 @@ TRACE_DEFINE_ENUM(CP_TRIMMED);
 		{ CP_NODE_NEED_CP,	"node needs cp" },		\
 		{ CP_FASTBOOT_MODE,	"fastboot mode" },		\
 		{ CP_SPEC_LOG_NUM,	"log type is 2" },		\
-		{ CP_RECOVER_DIR,	"dir needs recovery" })
+		{ CP_RECOVER_DIR,	"dir needs recovery" },		\
+		{ CP_PARENT_XATTR_SET,	"parent xattr is set" })
 
 #define show_shutdown_mode(type)					\
 	__print_symbolic(type,						\
