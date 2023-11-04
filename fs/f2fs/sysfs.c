@@ -34,6 +34,7 @@ enum {
 #endif
 	RESERVED_BLOCKS,	/* struct f2fs_sb_info */
 	CPRC_INFO,	/* struct ckpt_req_control */
+	ATGC_INFO,	/* struct atgc_management */
 };
 
 struct f2fs_attr {
@@ -72,6 +73,8 @@ static unsigned char *__struct_ptr(struct f2fs_sb_info *sbi, int struct_type)
 #endif
 	else if (struct_type == CPRC_INFO)
 		return (unsigned char *)&sbi->cprc_info;
+	else if (struct_type == ATGC_INFO)
+		return (unsigned char *)&sbi->am;
 	return NULL;
 }
 
@@ -415,12 +418,17 @@ out:
 	}
 
 	if (!strcmp(a->attr.name, "gc_idle")) {
-		if (t == GC_IDLE_CB)
+		if (t == GC_IDLE_CB) {
 			sbi->gc_mode = GC_IDLE_CB;
-		else if (t == GC_IDLE_GREEDY)
+		} else if (t == GC_IDLE_GREEDY) {
 			sbi->gc_mode = GC_IDLE_GREEDY;
-		else
+		} else if (t == GC_IDLE_AT) {
+			if (!sbi->am.atgc_enabled)
+				return -EINVAL;
+			sbi->gc_mode = GC_IDLE_AT;
+		} else {
 			sbi->gc_mode = GC_NORMAL;
+		}
 		return count;
 	}
 
@@ -433,6 +441,20 @@ out:
 		sbi->iostat_enable = !!t;
 		if (!sbi->iostat_enable)
 			f2fs_reset_iostat(sbi);
+		return count;
+	}
+
+	if (!strcmp(a->attr.name, "atgc_candidate_ratio")) {
+		if (t > 100)
+			return -EINVAL;
+		sbi->am.candidate_ratio = t;
+		return count;
+	}
+
+	if (!strcmp(a->attr.name, "atgc_age_weight")) {
+		if (t > 100)
+			return -EINVAL;
+		sbi->am.age_weight = t;
 		return count;
 	}
 
@@ -633,6 +655,11 @@ F2FS_FEATURE_RO_ATTR(quota_ino, FEAT_QUOTA_INO);
 F2FS_FEATURE_RO_ATTR(inode_crtime, FEAT_INODE_CRTIME);
 F2FS_FEATURE_RO_ATTR(lost_found, FEAT_LOST_FOUND);
 F2FS_FEATURE_RO_ATTR(sb_checksum, FEAT_SB_CHECKSUM);
+/* For ATGC */
+F2FS_RW_ATTR(ATGC_INFO, atgc_management, atgc_candidate_ratio, candidate_ratio);
+F2FS_RW_ATTR(ATGC_INFO, atgc_management, atgc_candidate_count, max_candidate_count);
+F2FS_RW_ATTR(ATGC_INFO, atgc_management, atgc_age_weight, age_weight);
+F2FS_RW_ATTR(ATGC_INFO, atgc_management, atgc_age_threshold, age_threshold);
 
 #define ATTR_LIST(name) (&f2fs_attr_##name.attr)
 static struct attribute *f2fs_attrs[] = {
@@ -697,6 +724,11 @@ static struct attribute *f2fs_attrs[] = {
 	ATTR_LIST(moved_blocks_background),
 	ATTR_LIST(avg_vblocks),
 #endif
+	/* For ATGC */
+	ATTR_LIST(atgc_candidate_ratio),
+	ATTR_LIST(atgc_candidate_count),
+	ATTR_LIST(atgc_age_weight),
+	ATTR_LIST(atgc_age_threshold),
 	NULL,
 };
 

@@ -252,6 +252,8 @@ checkpoint_merge       When checkpoint is enabled, this can be used to create a 
                        This is the same way to give a I/O priority to the jbd2
                        journaling thread of ext4 filesystem.
 nocheckpoint_merge     Disable checkpoint merge feature.
+atgc                   Enable age-threshold garbage collection, it provides high
+                       effectiveness and efficiency on background GC.
 
 ================================================================================
 DEBUGFS ENTRIES

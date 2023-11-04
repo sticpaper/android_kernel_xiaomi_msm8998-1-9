@@ -1568,13 +1568,14 @@ next_alloc:
 		}
 
 		down_write(&sbi->pin_sem);
-		map.m_seg_type = CURSEG_COLD_DATA_PINNED;
 
 		f2fs_lock_op(sbi);
-		f2fs_allocate_new_segments(sbi, CURSEG_COLD_DATA);
+		f2fs_allocate_new_segment(sbi, CURSEG_COLD_DATA_PINNED);
 		f2fs_unlock_op(sbi);
 
+		map.m_seg_type = CURSEG_COLD_DATA_PINNED;
 		err = f2fs_map_blocks(inode, &map, 1, F2FS_GET_BLOCK_PRE_DIO);
+
 		up_write(&sbi->pin_sem);
 
 		done += map.m_len;
@@ -2321,6 +2322,11 @@ do_more:
 	}
 
 	ret = f2fs_gc(sbi, range.sync, true, GET_SEGNO(sbi, range.start));
+	if (ret) {
+		if (ret == -EBUSY)
+			ret = -EAGAIN;
+		goto out;
+	}
 	range.start += BLKS_PER_SEC(sbi);
 	if (range.start <= end)
 		goto do_more;

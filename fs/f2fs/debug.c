@@ -171,7 +171,7 @@ static void update_general_status(struct f2fs_sb_info *sbi)
 		* 100 / (int)(sbi->user_block_count >> sbi->log_blocks_per_seg)
 		/ 2;
 	si->util_invalid = 50 - si->util_free - si->util_valid;
-	for (i = CURSEG_HOT_DATA; i <= CURSEG_COLD_NODE; i++) {
+	for (i = CURSEG_HOT_DATA; i < NO_CHECK_TYPE; i++) {
 		struct curseg_info *curseg = CURSEG_I(sbi, i);
 		si->curseg[i] = curseg->segno;
 		si->cursec[i] = GET_SEC_FROM_SEG(sbi, curseg->segno);
@@ -355,6 +355,14 @@ static int stat_show(struct seq_file *s, void *v)
 			   si->curseg[CURSEG_COLD_NODE],
 			   si->cursec[CURSEG_COLD_NODE],
 			   si->curzone[CURSEG_COLD_NODE]);
+		seq_printf(s, "  - Pinned file: %8d %8d %8d\n",
+			   si->curseg[CURSEG_COLD_DATA_PINNED],
+			   si->cursec[CURSEG_COLD_DATA_PINNED],
+			   si->curzone[CURSEG_COLD_DATA_PINNED]);
+		seq_printf(s, "  - ATGC   data: %8d %8d %8d\n",
+			   si->curseg[CURSEG_ALL_DATA_ATGC],
+			   si->cursec[CURSEG_ALL_DATA_ATGC],
+			   si->curzone[CURSEG_ALL_DATA_ATGC]);
 		seq_printf(s, "\n  - Valid: %d\n  - Dirty: %d\n",
 			   si->main_area_segs - si->dirty_count -
 			   si->prefree_count - si->free_segs,
