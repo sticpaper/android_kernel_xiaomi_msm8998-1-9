@@ -254,6 +254,10 @@ checkpoint_merge       When checkpoint is enabled, this can be used to create a 
 nocheckpoint_merge     Disable checkpoint merge feature.
 atgc                   Enable age-threshold garbage collection, it provides high
                        effectiveness and efficiency on background GC.
+age_extent_cache       Enable an age extent cache based on rb-tree. It records
+                       data block update frequency of the extent per inode, in
+                       order to provide better temperature hints for data block
+                       allocation.
 
 ================================================================================
 DEBUGFS ENTRIES
