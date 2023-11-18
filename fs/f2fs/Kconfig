@@ -18,7 +18,7 @@ config F2FS_FS
 
 config F2FS_STAT_FS
 	bool "F2FS Status Information"
-	depends on F2FS_FS && DEBUG_FS
+	depends on F2FS_FS
 	default y
 	help
 	  /sys/kernel/debug/f2fs/ contains information about all the partitions
@@ -62,7 +62,9 @@ config F2FS_FS_SECURITY
 	  Security Models (LSMs) accepted by AppArmor, SELinux, Smack and TOMOYO
 	  Linux. This option enables an extended attribute handler for file
 	  security labels in the f2fs filesystem, so that it requires enabling
-	  the extended attribute support in advance.
+	  the extended attribute support in advance. In particular you need this
+	  option if you use the setcap command to assign initial process capabi-
+	  lities to executables (the security.* extended attributes).
 
 	  If you are not using a security module, say N.
 
@@ -84,16 +86,6 @@ config F2FS_FS_ENCRYPTION
 	  feature is similar to ecryptfs, but it is more memory
 	  efficient since it avoids caching the encrypted and
 	  decrypted pages in the page cache.
-
-config F2FS_IO_TRACE
-	bool "F2FS IO tracer"
-	depends on F2FS_FS
-	depends on FUNCTION_TRACER
-	help
-	  F2FS IO trace is based on a function trace, which gathers process
-	  information and block IO patterns in the filesystem level.
-
-	  If unsure, say N.
 
 config F2FS_FAULT_INJECTION
 	bool "F2FS fault injection facility"
